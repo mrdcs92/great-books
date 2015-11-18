@@ -62,7 +62,7 @@ app.post('/', function(req, res) {
 
 // Start the server
 var port = process.env.PORT || 3000;
-var address = process.env.IP || '127.0.0.1'
+var address = process.env.IP || '127.0.0.1';
 app.listen(port, address, function() {
   console.log('%s listening at http://%s:%s',
     app.locals.sitename, address, port);
