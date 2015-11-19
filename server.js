@@ -47,17 +47,44 @@ app.post('/', function(req, res) {
   // Save the book if the user submitted something
   var titleSubmitted = req.body && req.body.title && req.body.title.trim();
   if(titleSubmitted) {
-    // TODO: Don't add duplicate titles
+    
+    if (booklist.length === 0) {
+      booklist.push({
+        title: req.body.title
+      });
+      
+      res.render('index', {
+        title: 'Welcome',
+        message: 'Thank you for your submission!',
+        books: booklist
+      });
+    }
+    
+    else {
     booklist.push({
       title: req.body.title
     });
+    
+    for (var i = 0; i < booklist.length; i++) {
+      if (booklist[i]['title'] === req.body.title) {
+        booklist.pop();
+        res.render('index', {
+          title: 'Welcome',
+          message: 'Sorry, the book you entered has already been submitted!',
+          books: booklist
+        });
+      }
+      else {
+        res.render('index', {
+        title: 'Welcome',
+        message: 'Thank you for your submission!',
+        books: booklist
+      });
+      }
+    }
   }
-
-  res.render('index', {
-    title: 'Welcome',
-    message: 'Thank you for your submission!',
-    books: booklist
-  });
+  
+  }
 });
 
 // Start the server
