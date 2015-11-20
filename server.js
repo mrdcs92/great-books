@@ -23,12 +23,17 @@ app.use(bodyparser.urlencoded({
 }));
 
 // Store site-wide information for templates
-app.locals.sitename = 'Great Books';
-app.locals.source_url = 'https://github.com/unioncollege-webtech/great-books';
+app.locals.site = {
+  name: 'Great Books',
+  source: 'https://github.com/mrdcs92/great-books',
+  author: {
+    firstname: "Dylan",
+    lastname: "Smith"
+  }
+};
 
 // Initialize the book database
 var booklist = [];
-
 
 //
 // Register application routes
@@ -47,32 +52,27 @@ app.post('/', function(req, res) {
   // Save the book if the user submitted something
   var titleSubmitted = req.body && req.body.title && req.body.title.trim();
   if(titleSubmitted) {
-    
-    if (booklist.length > 0) {
-      
-      for (var i = 0; i < booklist.length; i++) {
-        if (booklist[i]['title'] === req.body.title) {
+    booklist.push({
+      title: req.body.title.trim()
+    });
+   
+    // if the title submitted is equal to any of the titles in the array,
+    // pop the element that was just submitted
+    if (booklist.length > 1) {
+      var length = booklist.length - 1;
+      for (var i = 0; i < length; i++) {
+        if (booklist[i]['title'] === titleSubmitted) {
+          booklist.pop();
           res.render('index', {
             title: 'Welcome',
-            message: 'Sorry, the book you entered has already been submitted!',
-            books: booklist
-          });
-        }
-        else {
-          res.render('index', {
-            title: 'Welcome',
-            message: 'Thank you for your submission!',
+            message: 'Sorry, your submission is already a part of our list!',
             books: booklist
           });
         }
       }
+      
     }
-    
     else {
-    booklist.push({
-      title: req.body.title
-    });
-    
       res.render('index', {
         title: 'Welcome',
         message: 'Thank you for your submission!',
@@ -87,5 +87,5 @@ var port = process.env.PORT || 3000;
 var address = process.env.IP || '127.0.0.1';
 app.listen(port, address, function() {
   console.log('%s listening at http://%s:%s',
-    app.locals.sitename, address, port);
+    app.locals.site.name, address, port);
 });

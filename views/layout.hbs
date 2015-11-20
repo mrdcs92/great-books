@@ -3,8 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<!-- TODO: 1. Set the page <title> to be "{{sitename}} | {{title}}" -->
-	<title>{{sitename}} | {{title}}</title>
+	<title>{{site.name}} | {{title}}</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="viewport" content="width=device-width">
 </head>
@@ -12,8 +11,7 @@
 <body>
 	<header>
 		<h1><a href="/">
-			<!-- TODO 2. Use sitename for the page heading -->
-			<heading>{{sitename}}</heading>
+			<heading>{{site.name}}</heading>
 		</a></h1>
 
 		<p class="tagline">
@@ -21,11 +19,13 @@
 		</p>
 	</header>
 	<main>
-		<!-- TODO 3: Include the body here -->
 		{{{ body }}}
 	</main>
 	<footer>
-		<p><small><a href="TODO 4. Link to the source code URL.">View source code on GitHub</a></small></p>
+		<p><small><a href="{{site.source}}">View source code on GitHub</a></small></p>
+		{{#site.author}}
+		<p><small>Page created by {{firstname}} {{lastname}}</small></p>
+		{{/site.author}}
 	</footer>
 </body>
 
